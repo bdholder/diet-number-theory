@@ -90,8 +90,8 @@ class Polynomial:
         return line1 + '\n' + line2
 
 
-    def derivative(self, n=1):
-        '''Returns the nth derivative of the polynomial.'''
+    def derivative(self):
+        '''Returns the derivative of the polynomial.'''
         new_coeff = []
         it = enumerate(self.coeff)
         next(it)
@@ -276,7 +276,6 @@ def linear_congruence_solve(a, b, m):
     x = 0
     while (a*x - b) % m != 0:
         x += 1
-
 
     solutions = []
     for t in range(d):
