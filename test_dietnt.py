@@ -60,7 +60,7 @@ class TestGCD(unittest.TestCase):
                       ((15, 21, 35), 1)]
         for i, ex in test_cases:
             with self.subTest(i=i):
-                self.assertEqual(gcd(*i), ex)
+                self.assertEqual(gcd(i), ex)
 
 
     def test_extended_gcd(self):
@@ -77,7 +77,7 @@ class TestGCD(unittest.TestCase):
                       ((5, 4, 5), 1)]
         for a, d in test_cases:
             with self.subTest(a=a, d=d):
-                result = extended_gcd(*a)
+                result = extended_gcd(a)
                 self.assertEqual(result[0], d)
                 lc = 0
                 for x, y in zip(a, result[1]):

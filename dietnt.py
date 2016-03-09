@@ -122,14 +122,17 @@ def chinese_remainder(a, m):
 
 
 
-def extended_gcd(a, *args):
+def extended_gcd(args):
     '''Returns a list whose first argument is the GCD and whose second argument is a list of Bézout coefficients for one or more nonnegative integers.\
     '''
-    #assert a > 0
     if len(args) == 0:
+        return None
+    
+    a = args[0]
+    if len(args) == 1:
         return [a, [1]]
 
-    egcd = extended_gcd(*args)
+    egcd = extended_gcd(args[1:])
     b = egcd[0]
 
     if a < b:
@@ -201,12 +204,16 @@ def factor_integer(n):
 
 
 
-def gcd(a, *args):
+def gcd(args):
     '''Returns the greatest common divisor of one or more nonnegative integers.'''
     if len(args) == 0:
+        return None
+
+    a = args[0]
+    if len(args) == 1:
         return a
 
-    b = gcd(*args)
+    b = gcd(args[1:])
     if a < b:
         a, b = b, a
     assert a >= b
@@ -231,7 +238,7 @@ def hensel(f, r, p, k):
 
 def inverse_mod(a, m):
     '''Returns the inverse modulo m of a or None if no inverse exists.'''
-    egcd = extended_gcd(a,m)
+    egcd = extended_gcd((a,m))
     if egcd[0] != 1:
         return None
 
@@ -242,7 +249,7 @@ def is_pairwise_coprime(m):
     '''Returns True if the list of nonnegative integers is pairwise relatively prime and False otherwise.'''
     for i in range(len(m)):
         for j in range(i+1, len(m)):
-            if gcd(m[i], m[j]) != 1:
+            if gcd((m[i], m[j])) != 1:
                 return False
     return True
 
@@ -268,7 +275,7 @@ def is_prime(n):
 #TODO: Slow for large inputs. Could probably speed up polynomial congruence solve and just use that.
 def linear_congruence_solve(a, b, m):
     '''Returns a list of solutions of the linear congruence ax ≡ b (mod m) or None if no solution exists.'''
-    d = gcd(a,m)
+    d = gcd((a,m))
     if b % d:
         return None
 
@@ -289,7 +296,7 @@ def linear_diophantine_solve(a,b):
     '''Returns a solution to the linear Diophantine equation associated with the coefficient vector a or None if no solution exists; that is, returns a vector x such that ax = b, where ax is the dot product of a and x.'''
     assert len(a) >= 1
 
-    egcd = extended_gcd(*a)
+    egcd = extended_gcd(a)
     d = egcd[0]
 
     if b % d:
@@ -306,7 +313,7 @@ def linear_diophantine_solve(a,b):
 def poly_congruence_solve(p, a, m):
     '''Solves a polynomial congruence of the form p(x) ≡ a (mod m), or returns None if no solution exists.
 
-    p should be a list of coefficients in ascending order of degree; that is, the coefficient of x**n will be the (n+1)th list entry.
+    p should be a Polynomial object or a list of coefficients in ascending order of degree; that is, the coefficient of x**n will be the (n+1)th list entry.
     '''
 
     solutions = []
