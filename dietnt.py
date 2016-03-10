@@ -112,13 +112,9 @@ def chinese_remainder(a, m):
 
     The function does not check that the elements of m are pairwise relatively prime and will probably raise a TypeError if they are not.
 '''
-    M = functools.reduce(operator.mul, m, 1)
-    sum_ = 0
-    for a_k, m_k in zip(a, m):
-        M_k = M // m_k
-        sum_ += a_k * M_k * inverse_mod(M_k, m_k)
-    sum_ %= M
-    return sum_
+    M = functools.reduce(operator.mul, m)
+    f = lambda a_k, m_k, M_k: a_k * M_k * inverse_mod(M_k, m_k)
+    return functools.reduce(operator.add, map(f, a, m, (M // mk for mk in m))) % M
 
 
 
