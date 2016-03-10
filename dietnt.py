@@ -8,8 +8,9 @@ import functools, math, operator
 
 
 class Polynomial:
-    def __init__(self, it):
-        self.coeff = tuple(it)
+    def __init__(self, coeff):
+        '''coeff should be a list of coefficients in order of increasing degree; that is, the coefficient of x**n will be the (n+1)th entry.'''
+        self.coeff = tuple(coeff)
         #Ensures that at least one coefficient is nonzero if not the zero poly
         for i in self.coeff:
             if i != 0:
@@ -223,7 +224,7 @@ def gcd(args):
     return b
 
 
-#TODO: tests
+#TODO: Only partially implemented. Tests needed.
 def hensel(f, r, p, k):
     fp = f.derivative()
     assert fp(r) % p
@@ -239,6 +240,7 @@ def inverse_mod(a, m):
         return None
 
     return egcd[1][0] % m
+
 
 
 def is_pairwise_coprime(m):
