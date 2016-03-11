@@ -224,17 +224,21 @@ def gcd(args):
     return b
 
 
-#TODO: Only partially implemented. Tests needed.
+
 def hensel(f, r, p, k):
     fp = f.derivative()
     if fp(r) % p:
         t = (-inverse_mod(fp(r),p) * (f(r) // p**k)) % p
-        return r + t*p**k
+        return set((r + t*p**k,))
 
     if f(r) % p**(k+1):
-        return None
+        return set()
 
-    #Handle third case
+    #Probably wrong
+    solutions = set()
+    for t in range(p):
+        solutions.add(r + t*p**k)
+    return solutions
 
 
 
@@ -336,7 +340,7 @@ def modular_exp(b, n, m):
         return 1
     if n < 0:
         b = inverse_mod(b, m)
-        if b == None:
+        if not b:
             return None
         n = abs(n)
     bd = _binary_digits(n)
@@ -344,20 +348,35 @@ def modular_exp(b, n, m):
     return functools.reduce(operator.mul, map(lambda p, d: p if d else 1, pm, bd)) % m
 
 
-#Currently uses brute force
-def poly_congruence_solve(p, a, m):
-    '''Solves a polynomial congruence of the form p(x) ≡ a (mod m), or returns None if no solution exists.
 
-    p should be a Polynomial object or a list of coefficients in ascending order of degree; that is, the coefficient of x**n will be the (n+1)th list entry.
+def _poly_congruence_prime_power(f, p, k):
+    solns = _poly_congruence_brute(f, p)
+    
+    for i in range(1,k):
+        new_solns = set()
+        for j in solns:
+            new_solns |= hensel(f, j, p, i)
+        solns = new_solns
+
+    return solns
+
+
+
+def _poly_congruence_brute(p, m):
+    '''Returns the solution set of a polynomial congruence of the form p(x) ≡ 0 (mod m) via brute force.
     '''
-
-    solutions = []
+    solutions = set()
     for x in range(m):
-        if p(x) % m == a:
-            solutions.append(x)
-    if solutions:
-        return solutions
-    return None
+        if p(x) % m == 0:
+            solutions.add(x)
+    return solutions
+
+
+
+def poly_congruence_solve(p, m):
+    '''Returns the solution set of a polynomial congruence of the form p(x) ≡ 0 (mod m).
+    '''
+    pass
 
 
 

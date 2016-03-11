@@ -3,7 +3,7 @@ primes_to_1000 = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59
 
 
 from dietnt import *
-from dietnt import _binary_powers_mod
+from dietnt import _binary_powers_mod, _poly_congruence_prime_power
 import unittest
 
 
@@ -96,6 +96,34 @@ class TestGCD(unittest.TestCase):
         for m, ex in test_cases:
             with self.subTest(m=m, ex=ex):
                 self.assertEqual(is_pairwise_coprime(m), ex)
+
+
+class TestHensel(unittest.TestCase):
+    def test_hensel(self):
+        test_cases = ((Polynomial((29,0,1,1)), 3, 5, 1, set((23,))),
+                      (Polynomial((7,1,1)), 1, 3, 1, set((1,4,7))),
+                      (Polynomial((7,1,1)), 1, 3, 2, set()),
+                      (Polynomial((7,1,1)), 4, 3, 2, set((4,13,22))),
+                      (Polynomial((7,1,1)), 7, 3, 2, set()),
+                      (Polynomial((26,2,1,1)), 2, 7, 1, set((16,))),
+                      (Polynomial((26,2,1,1)), 16, 7, 2, set((114,))))
+        for f, r, p, k, ex in test_cases:
+            with self.subTest(f=f, r=r, p=p, k=k, ex=ex):
+                self.assertEqual(hensel(f,r,p,k), ex)
+
+
+    def test_poly_congruence_prime_power(self):
+        test_cases = ((Polynomial((29,0,1,1)), 5, 2, set((23,))),
+                      (Polynomial((7,1,1)), 3, 3, set((4,13,22))),
+                      (Polynomial((26,2,1,1)), 7, 3, set((114,))),
+                      (Polynomial((2,4,1)), 7, 3, set((106,233))),
+                      (Polynomial((-1,-1,8,1)), 11, 3, set((1148,))),
+                      (Polynomial((47,1,1)), 7, 4, set((785,1615))),
+                      (Polynomial((34,1,1)), 3, 4, set()),
+                      (Polynomial((36,2,0,0,1)), 5, 4, set((279,))))
+        for f, p, k, ex in test_cases:
+            with self.subTest(f=f, p=p, k=k, ex=ex):
+                self.assertEqual(_poly_congruence_prime_power(f,p,k), ex)
 
 
 
@@ -256,6 +284,23 @@ class TestPolynomial(unittest.TestCase):
         for p, ex in test_cases:
             with self.subTest(p=p, ex=ex):
                 self.assertEqual(str(p), ex)
+
+
+class TestPolynomialCongruenceSolve(unittest.TestCase):
+    @unittest.skip('not implemented')
+    def test_poly_congruence_solve(self):
+        test_cases = [(Polynomial((-4,7,0,2)), 25, set((116,))),
+                      (Polynomial((29,0,1,1)), 25, set((23,))),
+                      (Polynomial((7,1,1)), 27, set((4,13,22))),
+                      (Polynomial((26,2,1,1)), 343, set((114,))),
+                      (Polynomial((-649,-42,0,0,0,0,0,13)), 1323, set((184, 373, 562, 751, 940, 1129, 1318))),
+                      (Polynomial((1001,0,0,0,-1,0,0,0,1)), 539, set((155, 188, 253, 286, 351, 384))),
+                      (Polynomial((36,2,0,0,1)), 4375, set((279, 3404))),
+                      (Polynomial((-35,0,0,0,0,-2,1)), 6125, set((3257,)))]
+        for f, m, ex in test_cases:
+            with self.subTest(f=f, m=m, ex=ex):
+                self.assertEqual(poly_congruence_solve(f, m), ex)
+
 
 
 class TestSieve(unittest.TestCase):
