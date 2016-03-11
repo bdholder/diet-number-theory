@@ -1,6 +1,6 @@
 # Diet Number Theory
 
-DietNT is a self-contained module for performing computations in elementary number theory. Simply download it to your default working directory, import, and you're ready to go. To download just the file dietnt.py from GitHub, you need to click on the file, then click "Raw," and save the file.
+DietNT is a self-contained module for performing computations in elementary number theory. Simply download it to your default working directory, import, and you're ready to go. To download just the file dietnt.py from GitHub, you need to click on the file, then click "Raw" and save the file.
 
 For a listing of all the functions available, while in the Python interpreter's interactive mode, type "help()", then "dietnt".
 
@@ -77,19 +77,24 @@ For a listing of all the functions available, while in the Python interpreter's 
     >>> linear_diophantine_solve(a, 1)
     [0, 0, -2, 6, -3]
 
+## modular exponentiation
+
+    >>> import math
+    >>> modular_exp(2, 644, 645)
+    1
+    >>> 2**644 % 645
+    1
+    >>> modular_exp(7651, math.factorial(20), 10403)
+    1
+    >>> modular_exp(7651, math.factorial(52)-1, 10403)
+    8993
+
 ## modular inverses
 
     >>> inverse_mod(7, 31)
     9
     >>> 7*9 % 31
     1
-
-## prime numbers
-
-    >>> sieve(50)
-    [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47]
-    >>> is_pairwise_coprime(sieve(50))
-    True
 
 ## polynomial congruences
 
@@ -103,3 +108,10 @@ For a listing of all the functions available, while in the Python interpreter's 
     1751551500602262973572
     >>> p(751) % 1323
     0
+
+## prime numbers
+
+    >>> sieve(50)
+    [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47]
+    >>> is_pairwise_coprime(sieve(50))
+    True

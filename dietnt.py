@@ -227,9 +227,14 @@ def gcd(args):
 #TODO: Only partially implemented. Tests needed.
 def hensel(f, r, p, k):
     fp = f.derivative()
-    assert fp(r) % p
-    t = (-inverse_mod(fp(r),p) * (f(r) // p**k)) % p
-    return r + t*p**k
+    if fp(r) % p:
+        t = (-inverse_mod(fp(r),p) * (f(r) // p**k)) % p
+        return r + t*p**k
+
+    if f(r) % p**(k+1):
+        return None
+
+    #Handle third case
 
 
 
@@ -305,6 +310,33 @@ def linear_diophantine_solve(a,b):
         egcd[1][i] = scalar * egcd[1][i]
 
     return egcd[1]
+
+
+def _binary_digits(n):
+    '''Generator yielding the base 2 digit sequence of n.'''
+    while n > 0:
+        yield n % 2
+        n //= 2
+
+
+def _binary_powers_mod(a, m):
+    '''Generator yielding the binary powers of a modulo m; i.e., the nth call to next will yield a**(2**(n-1)).'''
+    cache = {}
+    while True:
+        yield a
+        if not a in cache:
+            cache[a] = a*a % m
+        a = cache[a]
+
+
+
+def modular_exp(b, n, m):
+    '''Uses fast modular exponentiation to evaluate b**n % m.'''
+    if n == 0:
+        return 1
+    bd = _binary_digits(n)
+    pm = _binary_powers_mod(b, m)
+    return functools.reduce(operator.mul, map(lambda p, d: p if d else 1, pm, bd)) % m
 
 
 #Currently uses brute force

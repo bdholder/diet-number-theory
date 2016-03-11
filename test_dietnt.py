@@ -3,6 +3,7 @@ primes_to_1000 = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59
 
 
 from dietnt import *
+from dietnt import _binary_powers_mod
 import unittest
 
 
@@ -154,6 +155,36 @@ class TestLinearDiophantineSolve(unittest.TestCase):
         for a, rhs in test_cases:
             with self.subTest(a=a, rhs=rhs):
                 self.assertEqual(linear_diophantine_solve(a, rhs), None)
+
+
+
+class TestModularExponentiation(unittest.TestCase):
+    def test_modular_exp(self):
+        test_cases = ((2, 644, 645, 1),
+                      (2, 32, 47, 42),
+                      (2, 47, 47, 2),
+                      (2, 200, 47, 18),
+                      (2, 12, 13, 1),
+                      (3, 10, 11, 1),
+                      (7651, 891, 10403, 1362),
+                      (7651, 3628800, 10403, 4546))
+        for b, n, m, ex in test_cases:
+            with self.subTest(b=b, n=n, m=m, ex=ex):
+                self.assertEqual(modular_exp(b, n, m), ex)
+
+
+    def test_binary_powers_mod(self):
+        test_cases = ((2, 645, [2,4,16,256,391,16,256,391,16,256]),
+                      (7651, 10403, [7651,120,3997,7404,5809,7552,3458,4717,8475,3313]),
+                      (3, 47, [3,9,34,28,32,37,6,36,27,24,12,3,9]))
+        for a, m, ex in test_cases:
+            with self.subTest(a=a, m=m, ex=ex):
+                g = _binary_powers_mod(a, m)
+                s = []
+                for i in ex:
+                    s.append(next(g))
+                self.assertEqual(s, ex)
+
 
 
 class TestPolynomial(unittest.TestCase):
