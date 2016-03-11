@@ -88,6 +88,10 @@ For a listing of all the functions available, while in the Python interpreter's 
     1
     >>> modular_exp(7651, math.factorial(52)-1, 10403)
     8993
+    >>> modular_exp(9, -3, 101)
+    23
+    >>> (9**3)*23 % 101
+    1
 
 ## modular inverses
 

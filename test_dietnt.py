@@ -160,14 +160,21 @@ class TestLinearDiophantineSolve(unittest.TestCase):
 
 class TestModularExponentiation(unittest.TestCase):
     def test_modular_exp(self):
-        test_cases = ((2, 644, 645, 1),
+        test_cases = ((2, 0, 101, 1),
+                      (2, 644, 645, 1),
                       (2, 32, 47, 42),
                       (2, 47, 47, 2),
                       (2, 200, 47, 18),
                       (2, 12, 13, 1),
                       (3, 10, 11, 1),
                       (7651, 891, 10403, 1362),
-                      (7651, 3628800, 10403, 4546))
+                      (7651, 3628800, 10403, 4546),
+                      (3, -1, 6, None),
+                      (7, -1, 19, 11),
+                      (7, -2, 19, 7),
+                      (9, -1, 101, 45),
+                      (9, -2, 101, 5),
+                      (9, -3, 101, 23))
         for b, n, m, ex in test_cases:
             with self.subTest(b=b, n=n, m=m, ex=ex):
                 self.assertEqual(modular_exp(b, n, m), ex)

@@ -334,6 +334,11 @@ def modular_exp(b, n, m):
     '''Uses fast modular exponentiation to evaluate b**n % m.'''
     if n == 0:
         return 1
+    if n < 0:
+        b = inverse_mod(b, m)
+        if b == None:
+            return None
+        n = abs(n)
     bd = _binary_digits(n)
     pm = _binary_powers_mod(b, m)
     return functools.reduce(operator.mul, map(lambda p, d: p if d else 1, pm, bd)) % m
