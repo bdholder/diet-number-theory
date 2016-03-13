@@ -287,9 +287,8 @@ class TestPolynomial(unittest.TestCase):
 
 
 class TestPolynomialCongruenceSolve(unittest.TestCase):
-    @unittest.skip('not implemented')
     def test_poly_congruence_solve(self):
-        test_cases = [(Polynomial((-4,7,0,2)), 25, set((116,))),
+        test_cases = [(Polynomial((-4,7,0,2)), 25, set((16,))),
                       (Polynomial((29,0,1,1)), 25, set((23,))),
                       (Polynomial((7,1,1)), 27, set((4,13,22))),
                       (Polynomial((26,2,1,1)), 343, set((114,))),

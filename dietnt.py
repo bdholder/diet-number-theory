@@ -3,7 +3,7 @@
 This module contains a small suite of functions for performing computations in elementary number theory. The algorithms used are generally on the simple end of the spectrum. If you need better performance or a more comprehensive collection of functions, look into SymPy.
 '''
 
-import functools, math, operator
+import functools, itertools, math, operator
 
 
 
@@ -373,10 +373,22 @@ def _poly_congruence_brute(p, m):
 
 
 
-def poly_congruence_solve(p, m):
+def poly_congruence_solve(f, m):
     '''Returns the solution set of a polynomial congruence of the form p(x) ≡ 0 (mod m).
     '''
-    pass
+    factor_dict = factor_integer(m)
+    soln_sets_list = []
+    moduli = []
+    for prime in factor_dict:
+        soln_sets_list.append(_poly_congruence_prime_power(f, prime, factor_dict[prime]))
+        moduli.append(prime**factor_dict[prime])
+    
+    cartesian_product = itertools.product(*soln_sets_list)
+    solutions = set()
+    for a in cartesian_product:
+        solutions.add(chinese_remainder(a, moduli))
+
+    return solutions
 
 
 
