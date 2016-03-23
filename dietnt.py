@@ -279,23 +279,10 @@ def is_prime(n):
 
 
 
-#TODO: Slow for large inputs. Could probably speed up polynomial congruence solve and just use that.
 def linear_congruence_solve(a, b, m):
-    '''Returns a list of solutions of the linear congruence ax ≡ b (mod m) or None if no solution exists.'''
-    d = gcd((a,m))
-    if b % d:
-        return None
-
-    md = m // d
-    x = 0
-    while (a*x - b) % m != 0:
-        x += 1
-
-    solutions = []
-    for t in range(d):
-        solutions.append(x + md*t)
-
-    return solutions
+    '''Returns the solution set of the linear congruence ax ≡ b (mod m).'''
+    p = Polynomial((-b, a))
+    return poly_congruence_solve(p, m)
 
 
 
@@ -374,7 +361,7 @@ def _poly_congruence_brute(p, m):
 
 
 def poly_congruence_solve(f, m):
-    '''Returns the solution set of a polynomial congruence of the form p(x) ≡ 0 (mod m).
+    '''Returns the solution set of a polynomial congruence of the form f(x) ≡ 0 (mod m).
     '''
     factor_dict = factor_integer(m)
     soln_sets_list = []

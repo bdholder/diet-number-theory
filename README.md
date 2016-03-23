@@ -55,9 +55,10 @@ For a listing of all the functions available, while in the Python interpreter's 
 
 ## linear congruences
 
-    >>> linear_congruence_solve(9, 12, 15)
-    [3, 8, 13]
-    >>> linear_congruence_solve(6789783, 2474010, 28927951)
+   >>> linear_congruence_solve(9, 12, 15)
+   {8, 3, 13}
+   >>> linear_congruence_solve(6789783, 2474010, 28927951)
+   set()
 
 ## linear Diophantine equations
 
@@ -106,8 +107,8 @@ For a listing of all the functions available, while in the Python interpreter's 
     >>> print(p)
                     7
     -649 - 42x + 13x 
-    >>> poly_congruence_solve(p, 0, 1323)
-    [184, 373, 562, 751, 940, 1129, 1318]
+    >>> poly_congruence_solve(p, 1323)
+    {1318, 1129, 940, 751, 562, 373, 184}
     >>> p(751)
     1751551500602262973572
     >>> p(751) % 1323
