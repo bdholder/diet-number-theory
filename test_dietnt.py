@@ -312,5 +312,18 @@ class TestSieve(unittest.TestCase):
                 self.assertEqual(sieve(n), l)
 
 
+class TestTotient(unittest.TestCase):
+    def test_totient(self):
+        test_cases = [(1, 1),
+                      (85, 64),
+                      (71, 70),
+                      (67, 66),
+                      (51, 32),
+                      (93, 60)]
+        for n, ex in test_cases:
+            with self.subTest(n=n, ex=ex):
+                self.assertEqual(totient(n), ex)
+
+
 if __name__ == '__main__':
     unittest.main()

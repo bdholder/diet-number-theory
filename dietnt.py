@@ -400,3 +400,20 @@ def sieve(n):
             prime_list.append(i)
 
     return prime_list
+
+
+#Simplest implementation
+def totient(n):
+    '''
+    Euler's totient function.
+    '''
+    assert n > 0
+    if n < 3:
+        return 1
+
+    count = 1
+    for i in range(2, n):
+        if gcd((n, i)) == 1:
+            count += 1
+
+    return count
