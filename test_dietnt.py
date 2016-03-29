@@ -185,6 +185,19 @@ class TestLinearDiophantineSolve(unittest.TestCase):
                 self.assertEqual(linear_diophantine_solve(a, rhs), None)
 
 
+class TestMobius(unittest.TestCase):
+    def test_mobius(self):
+        test_cases = [(1, 1),
+                      (29, -1),
+                      (18, 0),
+                      (6, 1),
+                      (7, -1),
+                      (20, 0)]
+        for n, ex in test_cases:
+            with self.subTest(n=n, ex=ex):
+                self.assertEqual(mobius(n), ex)
+
+
 
 class TestModularExponentiation(unittest.TestCase):
     def test_modular_exp(self):

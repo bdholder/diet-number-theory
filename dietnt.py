@@ -234,7 +234,6 @@ def hensel(f, r, p, k):
     if f(r) % p**(k+1):
         return set()
 
-    #Probably wrong
     solutions = set()
     for t in range(p):
         solutions.add(r + t*p**k)
@@ -301,6 +300,19 @@ def linear_diophantine_solve(a,b):
         egcd[1][i] = scalar * egcd[1][i]
 
     return egcd[1]
+
+
+def mobius(n):
+    '''
+    Mobius function.
+    '''
+    if n == 1:
+        return 1
+    factors = factor_integer(n)
+    for v in factors.values():
+        if v > 1:
+            return 0
+    return 1 if len(factors) % 2 == 0 else -1
 
 
 def _binary_digits(n):
@@ -402,7 +414,6 @@ def sieve(n):
     return prime_list
 
 
-#Simplest implementation
 def totient(n):
     '''
     Euler's totient function.
@@ -411,9 +422,12 @@ def totient(n):
     if n < 3:
         return 1
 
-    count = 1
-    for i in range(2, n):
-        if gcd((n, i)) == 1:
-            count += 1
+    factors = factor_integer(n)
+    return functools.reduce(operator.mul,
+                            (p**(factors[p]-1) * (p-1) for p in factors))
 
-    return count
+
+def dirichlet_product(f, g):
+    def h(n):
+        return functools.reduce(operator.add, (f(d)*g(n//d) for d in range(1,n+1) if n % d == 0))
+    return h
